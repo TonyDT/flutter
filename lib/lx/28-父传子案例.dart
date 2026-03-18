@@ -14,26 +14,26 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   List<String> _list = [
-      "猪肉炖血肠",
-      "小鸡炖蘑菇",
-      "排骨炖豆角",
-       "扣肉",
-      "豆腐鱿鱼"];
+    "猪肉炖血肠",
+    "小鸡炖蘑菇",
+    "排骨炖豆角",
+    "扣肉",
+    "豆腐鱿鱼"];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-          body: GridView.count(
-            padding: EdgeInsets.all(10),
-            mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              crossAxisCount: 2,
-            children: List.generate(_list.length, (int index){
-              return Child(foodName: _list[index],);
-            }),
-          ),
-          
+      home: Scaffold(
+        body: GridView.count(
+          padding: EdgeInsets.all(10),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          crossAxisCount: 2,
+          children: List.generate(_list.length, (int index){
+            return Child(foodName: _list[index],);
+          }),
         ),
+
+      ),
     );
   }
 }
@@ -54,8 +54,8 @@ class _ChildState extends State<Child> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-        alignment: Alignment.center,
-        child:Text(widget.foodName,style: TextStyle(color: Colors.white,fontSize: 20)),
+      alignment: Alignment.center,
+      child:Text(widget.foodName,style: TextStyle(color: Colors.white,fontSize: 20)),
     );
   }
 }
