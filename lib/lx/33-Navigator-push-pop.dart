@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String>args){
-
+//push跳转 pop返回  widget传参
   runApp(MainPage());
 }
 //路由跳转Material风格，只能有一个MaterialApp
@@ -16,6 +16,11 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: "/list",
+      routes: {
+        "/list":(context)=>ListPage(),
+        "/detail":(context)=>DetailPage()
+      },
       home:ListPage() ,//列表页 详情页
     );
   }
@@ -42,7 +47,8 @@ class _ListPageState extends State<ListPage> {
             return GestureDetector(
               onTap: (){
                 print("到详情页");
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage()));
+                // Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage()));
+                Navigator.pushNamed(context, "/detail",arguments: {"id": index + 1 });
               },
               child:  Container(
                 color: Colors.blue,
@@ -70,6 +76,26 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  String _id = "";
+  @override
+  void initState(){
+    super.initState();
+    Future.microtask((){
+      //获取路由参数
+      if(ModalRoute.of(context) != null){
+        //能够获取到路由参数
+        Map<String,dynamic>params =
+        ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+        _id = params["id"].toString();
+        print(params["id"]);
+        print(_id);
+        setState(() {
+
+        });
+      }else{
+
+      }
+    });}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,11 +104,17 @@ class _DetailPageState extends State<DetailPage> {
 
         ),
         body: Center(
-          child:TextButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: (Text("返回上一个页面")
-
-          ),
+          child: Column(
+            children: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: (Text("返回上一个页面")),
+              ),
+              TextButton(onPressed: (){
+                Navigator.pushNamed(context, "/list");
+              }, child: (Text("去列表页面$_id")),
+              ),
+            ],
           ),
         ));
   }
