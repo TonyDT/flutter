@@ -21,7 +21,7 @@ class MainPage extends StatelessWidget {
         "/list":(context)=>ListPage(),
         "/detail":(context)=>DetailPage()
       },
-        home:ListPage() ,//列表页 详情页
+      home:ListPage() ,//列表页 详情页
     );
   }
 }
@@ -36,33 +36,33 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-     appBar: AppBar(
-       title: Text("列表页"),
-     ),
-     body: ListView.builder(
-       padding: EdgeInsets.all(10),
-       itemCount: 100,
-       itemBuilder: (BuildContext context,int index){
-         return GestureDetector(
-           onTap: (){
-             print("到详情页");
-             // Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage()));
-            Navigator.pushNamed(context, "/detail",arguments: {"id": index + 1 });
-           },
-           child:  Container(
-             color: Colors.blue,
-             alignment: Alignment.center,
-             height: 100,
-             margin: EdgeInsets.only(top: 10),
-             child:Text("列表项${index+1}",
-                 style: TextStyle(color: Colors.white,fontSize: 20)),
-           ),
-         );
-     }),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("列表页"),
+      ),
+      body: ListView.builder(
+          padding: EdgeInsets.all(10),
+          itemCount: 100,
+          itemBuilder: (BuildContext context,int index){
+            return GestureDetector(
+              onTap: (){
+                print("到详情页");
+                // Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage()));
+                Navigator.pushNamed(context, "/detail",arguments: {"id": index + 1 });
+              },
+              child:  Container(
+                color: Colors.blue,
+                alignment: Alignment.center,
+                height: 100,
+                margin: EdgeInsets.only(top: 10),
+                child:Text("列表项${index+1}",
+                    style: TextStyle(color: Colors.white,fontSize: 20)),
+              ),
+            );
+          }),
 
-   );
-  
+    );
+
   }
 }
 
@@ -103,19 +103,19 @@ class _DetailPageState extends State<DetailPage> {
           title: Text("详情页"),
 
         ),
-      body: Center(
-        child: Column(
-          children: [
-            TextButton(onPressed: (){
-              Navigator.pop(context);
-            }, child: (Text("返回上一个页面")),
-            ),
-            TextButton(onPressed: (){
-              Navigator.pushNamed(context, "/list");
-            }, child: (Text("去列表页面$_id")),
-            ),
-          ],
-        ),
-      ));
+        body: Center(
+          child: Column(
+            children: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: (Text("返回上一个页面")),
+              ),
+              TextButton(onPressed: (){
+                Navigator.pushNamed(context, "/list");
+              }, child: (Text("去列表页面$_id")),
+              ),
+            ],
+          ),
+        ));
   }
 }
