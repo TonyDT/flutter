@@ -3,11 +3,78 @@
 
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 void main(List<String>args){
 
-  // DioUtils()
+  runApp(MainPage());
 }
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //发起网络请求
+    _getchannels();//获取频道数据
+  }
+  // https://geek.itheima.net/v1_0/channels
+  List<Map<String,dynamic>> _list = [];
+  void _getchannels() async{
+    DioUtils utils = DioUtils();//创建实例化对象
+    Response<dynamic> reslut= await utils.get("channels");
+    Map<String,dynamic>res = reslut.data as Map<String,dynamic>;
+    List data = res["data"]["channels"] as List;
+    _list = data.cast<Map<String,dynamic>>() as List<Map<String,dynamic>>;
+    setState(() {
+
+    });
+    print(_list);
+  //   channels是一个后端支持前端跨域访问的接口。
+
+  }
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(title: Text("频道管理")),
+          body:GridView.extent(
+            padding: EdgeInsets.all(10),
+            maxCrossAxisExtent: 140,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 3,
+            children: List.generate(_list.length, (index){
+              return ChannelItem(item: _list[index],);
+            }),
+          ),
+
+        ),
+    );
+  }
+}
+// 用来绘制每个频道的UI内容
+class ChannelItem extends StatelessWidget {
+  final Map<String,dynamic>item;
+  const ChannelItem({super.key,required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+        alignment: Alignment.center,
+
+        child:Text(item["name"] ?? "空",style: TextStyle(color: Colors.white),),
+    );
+  }
+}
+
 
 //封装一个工具类
 class DioUtils {
@@ -20,7 +87,7 @@ class DioUtils {
     // _dio.options.sendTimeout = Duration(seconds: 10);//发送超时
     // _dio.options.receiveTimeout = Duration(seconds: 10);//接收超时
     //简写连续复制的写法
-    _dio.options..baseUrl = "https://geekitheima.net/v1_0"
+    _dio.options..baseUrl = "https://geek.itheima.net/v1_0/"
     ..connectTimeout = Duration(seconds: 10)
     ..sendTimeout = Duration(seconds: 10)
     ..receiveTimeout = Duration(seconds: 10);
@@ -57,7 +124,7 @@ class DioUtils {
       ));
   }
   //向外暴露一个get方法
-  get(String url,Map<String,dynamic>? params){
+  get(String url,{Map<String,dynamic>? params}){
     return  _dio.get(url,queryParameters: params);
   }
 }
